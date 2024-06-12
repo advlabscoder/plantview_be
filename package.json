@@ -2,20 +2,17 @@
   "name": "plantviewbackend",
   "version": "1.0.0",
   "description": "plantview backend code package",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy":"firebase deploy --only functions:api"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "firebase-admin": "^12.1.1",
-    "firebase-functions": "^5.0.1",
-    "nodemon": "^3.1.3"
+      "nodemon": "^3.1.3"
   },
   "engines": {
     "node": "18"
