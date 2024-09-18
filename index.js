@@ -4,12 +4,17 @@ const cors = require('cors')
 const app = express()
 const pgp = require('pg-promise')()
 const connectionstr = process.env.DATABASE_URL
+const {insert} = pgp.helpers;
 const db = pgp(connectionstr)
 // db.none('INSERT INTO userprofile(uid,username,password) VALUES ($1,$2,$3)',[1,"test","pass"]).then(()=>{
 //   console.log('success')
 // }).catch(error=>{console.log(error);})
 // console.log(db)
+const deviceapi = require('./routes/deviceapi')
 
+
+
+app.use('/deviceapi', deviceapi)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
@@ -18,7 +23,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.get('/api/read/all',async (req,res)=>{
   try{
-    const deviceData = await db.any('SELECT * FROM mcdata');
+    const deviceData = await db.any('SELECT * FROM plsendata_1001');
     console.log(deviceData);
     res.send(deviceData)
   }catch(error){
@@ -26,12 +31,13 @@ app.get('/api/read/all',async (req,res)=>{
   }
 
 })
-
-
 app.post('/api/devicedata', (req, res) => {
   const reqData = req.body;
- console.log( new Date().getTime())
-db.none('INSERT INTO mcdata(dev1data,dev2data) VALUES ($1,$2)',[req.body.dev1data,req.body.dev2data]).then(()=>{
+  console.log('JSON',req.body)
+  const dataMulti = req.body.sens_data;;
+  const query=insert(dataMulti, ['sen_id','tmstp','sen_data'], req.body.DbTableName);
+
+db.none(query).then(()=>{
   console.log('success')
   console.log('device data inserted')
   res.send({
@@ -41,6 +47,8 @@ db.none('INSERT INTO mcdata(dev1data,dev2data) VALUES ($1,$2)',[req.body.dev1dat
 console.log(db)
 
 });
+
+
 
 
 // Handle production
@@ -54,7 +62,7 @@ if (process.env.NODE_ENV === 'production' || true) {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(port, () => console.log(`Server started on port ${port} For External Connections Windows defender needs to be turned off`));
 // const port = 3000
 
 // app.get('/', (req, res) => {
