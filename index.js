@@ -3,7 +3,8 @@ const cors = require('cors')
 
 const app = express()
 const pgp = require('pg-promise')()
-const connectionstr = process.env.DATABASE_URL
+// const connectionstr = process.env.DATABASE_URL
+ const connectionstr = 'postgres://plantview-be-main-db-0d003545971c484ad:dmfKrFEdSFnPVkE2q9JTYKUEByvXfr@user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com:5432/plantview-be-main-db-0d003545971c484ad'
 const {insert} = pgp.helpers;
 const db = pgp(connectionstr)
 // db.none('INSERT INTO userprofile(uid,username,password) VALUES ($1,$2,$3)',[1,"test","pass"]).then(()=>{
