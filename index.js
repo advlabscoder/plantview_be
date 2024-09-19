@@ -3,6 +3,9 @@ const cors = require('cors')
 
 const app = express()
 const pgp = require('pg-promise')()
+pgp.pg.types.setTypeParser(1114, function (stringValue) {
+  return stringValue;
+});
 const connectionstr = process.env.DATABASE_URL
 const {insert} = pgp.helpers;
 const db = pgp(connectionstr)
@@ -23,7 +26,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.get('/api/read/all',async (req,res)=>{
   try{
-    const deviceData = await db.any('SELECT * FROM plsendata_1001');
+    const deviceData = await db.any('SELECT * FROM plsendata_1001 ORDER BY prkey DESC LIMIT 300');
     console.log(deviceData);
     res.send(deviceData)
   }catch(error){
