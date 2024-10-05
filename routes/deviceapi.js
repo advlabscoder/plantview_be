@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const pgp = require('pg-promise')()
-// const connectionstr = process.env.DATABASE_URL
-const connectionstr = 'postgres://plantview-be-main-db-0d003545971c484ad:dmfKrFEdSFnPVkE2q9JTYKUEByvXfr@user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com:5432/plantview-be-main-db-0d003545971c484ad'
+const connectionstr = process.env.DATABASE_URL
+
 
 const db = pgp(connectionstr)
 

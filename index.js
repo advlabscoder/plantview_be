@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-
+require('dotenv').config()
 const app = express()
 const pgp = require('pg-promise')()
 pgp.pg.types.setTypeParser(1114, function (stringValue) {
