@@ -34,6 +34,18 @@ app.get('/api/read/all',async (req,res)=>{
   }
 
 })
+app.post('/api/read/all',async (req,res)=>{
+  try{
+    const reqData = req.body.tablename;
+    console.log('JSON',req.body.tablename)
+    const deviceData = await db.any(`SELECT * FROM ${reqData} ORDER BY prkey DESC LIMIT 300`);
+    console.log(deviceData);
+    res.send(deviceData)
+  }catch(error){
+    res.send(error)
+  }
+
+})
 app.post('/api/devicedata', (req, res) => {
   const reqData = req.body;
   console.log('JSON',req.body)
@@ -50,6 +62,24 @@ db.none(query).then(()=>{
 console.log(db)
 
 });
+
+app.post('/api/authenticate',async (req,res)=>{
+  try{
+    const userId = req.body.userId;
+    const password = req.body.password;
+    console.log('JSON',req.body.userId)
+    const userCompany = 
+    await db.any('SELECT comp_id FROM usertable WHERE user_id = $1 and user_pass = $2',
+       [userId,password]);
+    console.log(userCompany);
+    const compStaticData = await db.any('select * from comp_pl_map  inner join  pl_sen_map  on comp_pl_map.plant_id = pl_sen_map.plant_id where comp_id = $1',
+      [userCompany[0].comp_id]);
+    res.send(compStaticData)
+  }catch(error){
+    res.send(error)
+  }
+
+})
 
 
 
