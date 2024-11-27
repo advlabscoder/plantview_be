@@ -39,13 +39,31 @@ app.post('/api/read/all',async (req,res)=>{
     const reqData = req.body.tablename;
     console.log('JSON',req.body.tablename)
     const deviceData = await db.any(`SELECT * FROM ${reqData} ORDER BY prkey DESC LIMIT 300`);
-    console.log(deviceData);
+ //   console.log(deviceData);
     res.send(deviceData)
   }catch(error){
     res.send(error)
   }
 
 })
+
+app.post('/api/read/givendate',async (req,res)=>{
+  try{
+    const reqData = req.body.tablename;
+    const req_startDate = req.body.startDate;
+    const req_endDate = req.body.endDate;
+    console.log('JSON',req.body.tablename)
+  //  const deviceData = await db.any(`SELECT * FROM ${reqData} WHERE tmstp BETWEEN ${req_startDate}::date AND ${req_endDate}::date ORDER BY prkey DESC`);
+    const deviceData = await db.any(`SELECT * FROM ${reqData} WHERE tmstp BETWEEN $1::date AND  $2::date ORDER BY prkey DESC`,[req_startDate,req_endDate]);
+ 
+ // console.log(deviceData);
+    res.send(deviceData)
+  }catch(error){
+    res.send(error)
+  }
+
+})
+
 app.post('/api/devicedata', (req, res) => {
   const reqData = req.body;
   console.log('JSON',req.body)
